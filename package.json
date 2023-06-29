@@ -1,0 +1,15 @@
+{
+  "name": "server_1",
+  "version": "1.0.0",
+  "description": "my first server",
+  "main": "src/app.js",
+  "scripts": {
+    "start": "node src/app.js"
+  },
+  "author": "jesse dan",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "uuid": "^9.0.0"
+  }
+}
