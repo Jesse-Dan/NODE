@@ -1,4 +1,4 @@
-// trying tests on my module
+// trying tests on my    xcazzzxxxcccccc    test module
 // const Tests = require('./tests/test')
 // const test =  Tests
 
@@ -38,7 +38,7 @@ const json = [
     { name: 'jesse', food: 'Yam' },
     { name: 'John', food: 'Fufu' }]
 
-// test customer schema (model in dart)
+// test customer schema (as model in dart)
 const customer = new Customers({
     name: 'Jesse',
     industry: 'Technology'
@@ -51,21 +51,23 @@ app.get('/', (req, res) => {
 })
 
 // get end point 2
-app.get('/api/costumers/:id/:queryType', async (req, res) => {
-    console.log('================')
-    console.log(req.query.id)
-    console.log('================')
-    console.log(req.query.name)
-    console.log('================')
-    console.log(req.query.industry)
-    //     const customerId = req.params.id;
-    //     const {id} = req.params;
-    const { id: customerId } = req.params;
-    const { queryType: dataQueryType } = req.params;
-    console.log(`${customerId.toString()} ${dataQueryType.toString()}`)
-    const results = await Customers.findById(customerId)
-    res.json({results})
-
+app.get('/api/costumers/:id', async (req, res) => {
+    try {
+        //     const customerId = req.params.id;
+        //     const {id} = req.params;
+        const { id: customerId } = req.params;
+        console.log({ customerId })
+        const results = await Customers.findById(customerId)
+        console.log({ result: results.toString() })
+        if (!results) {
+            res.status(404).json({ error: 'user not found or doesn\'t exist on DB' })
+        } else {
+            res.json({ results })
+        }
+    } catch (error) {
+        console.log({ 'error': error.toString() })
+        res.status(500).json({ error: 'An error occured' })
+    }
 })
 
 
