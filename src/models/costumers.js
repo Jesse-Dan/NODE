@@ -4,10 +4,7 @@ const mongoose = require('mongoose')
 
 
 const costumersSchema = new mongoose.Schema({
-    name: {
-        type:String,
-        required:true
-    },
+    name: { type: String, required: true },
     industry: String
 });
 

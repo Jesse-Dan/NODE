@@ -50,11 +50,34 @@ app.get('/', (req, res) => {
     res.send('Hello world')
 })
 
-// get end point 2
+
+/// put end point 1 [alter a resource]
+app.put('/api/costumers/:id', async (req, res) => {
+    try {
+        const { id: customerId } = req.params;
+        const result = await Customers.replaceOne({ _id: customerId },req.body);
+        console.log({ result })
+        res.status(200).json({ updateCount: result.modifiedCount,result:result})
+    } catch (error) {
+        res.status(500).json({ error: `error modifying\n data with error: ${error}` })
+    }
+})
+
+/// put end point 1 [alter a resource]
+app.put('/api/costumers/:id', async (req, res) => {
+    try {
+        const { id: customerId } = req.params;
+        const result = await Customers.replaceOne({ _id: customerId },req.body);
+        console.log({ result })
+        res.status(200).json({ updateCount: result.modifiedCount,result:result})
+    } catch (error) {
+        res.status(500).json({ error: `error modifying\n data with error: ${error}` })
+    }
+})
+
+/// get end point 1 [search resourse]
 app.get('/api/costumers/:id', async (req, res) => {
     try {
-        //     const customerId = req.params.id;
-        //     const {id} = req.params;
         const { id: customerId } = req.params;
         console.log({ customerId })
         const results = await Customers.findById(customerId)
@@ -62,7 +85,7 @@ app.get('/api/costumers/:id', async (req, res) => {
         if (!results) {
             res.status(404).json({ error: 'user not found or doesn\'t exist on DB' })
         } else {
-            res.json({ results })
+            res.status(200).json({ results })
         }
     } catch (error) {
         console.log({ 'error': error.toString() })
