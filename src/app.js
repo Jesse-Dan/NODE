@@ -2,18 +2,16 @@
 // const Tests = require('./tests/test')
 // const test =  Tests
 
+const cors = require('cors');
 const express = require('express')
 const mongoose = require('mongoose')
 const Customers = require('./models/costumers')
+
 // const dotenv = require('dotenv')
 
 // init dotenv to pick .env data
 // dotenv.config()
 
-// init config on condition 
-if (process.env.NODE_ENV !== 'production') {
-    require('dotenv').config()
-}
 
 // init db
 mongoose.set({ 'strictQuery': false })
@@ -22,8 +20,15 @@ mongoose.set({ 'strictQuery': false })
 const app = express()
 
 // allow post bod
+app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+
+
+// init config on condition 
+if (process.env.NODE_ENV !== 'production') {
+    require('dotenv').config()
+}
 
 // init port
 const PORT = process.env.PORT || 3000
@@ -52,14 +57,14 @@ app.get('/', (req, res) => {
 
 
 /// put end point 1 [alter a resource]
-app.put('/api/costumers/:id', async (req, res) => {
+app.delete('/api/costumers/:id', async (req, res) => {
     try {
         const { id: customerId } = req.params;
-        const result = await Customers.replaceOne({ _id: customerId },req.body);
+        const result = await Customers.deleteOne({ _id: customerId }, req.body);
         console.log({ result })
-        res.status(200).json({ updateCount: result.modifiedCount,result:result})
+        res.status(200).json({ updateCount: result.modifiedCount, result: result })
     } catch (error) {
-        res.status(500).json({ error: `error modifying\n data with error: ${error}` })
+        res.status(500).json({ error: `error deleting\n data with error: ${error}` })
     }
 })
 
@@ -67,9 +72,9 @@ app.put('/api/costumers/:id', async (req, res) => {
 app.put('/api/costumers/:id', async (req, res) => {
     try {
         const { id: customerId } = req.params;
-        const result = await Customers.replaceOne({ _id: customerId },req.body);
+        const result = await Customers.findOneAndReplace({ _id: customerId }, req.body,{new:true});
         console.log({ result })
-        res.status(200).json({ updateCount: result.modifiedCount,result:result})
+        res.status(200).json({ updateCount: result.modifiedCount, result: result })
     } catch (error) {
         res.status(500).json({ error: `error modifying\n data with error: ${error}` })
     }
